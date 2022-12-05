@@ -2,8 +2,6 @@ const getData = require("../index");
 
 const data = getData("../data/day5.txt");
 
-const crates = data.slice(0, data.indexOf("") - 1);
-
 const moves = data.slice(data.indexOf("") + 1);
 const steps = moves.map((move) => {
   const moveArr = move.split(" ");
@@ -11,7 +9,16 @@ const steps = moves.map((move) => {
 });
 
 const getMap = () => {
-  //TODO parse data to create map
+  let crates = data.slice(0, data.indexOf("") - 1);
+  crates = crates
+    .map((line) => [...line].filter((_, index) => index % 4 === 1))
+    .reverse();
+  crates = crates[0]
+    .map((_, i) => crates.map((row) => row[i]))
+    .map((stack) =>
+      stack.filter((crate) => crate !== " " && crate !== undefined)
+    );
+  return crates;
 };
 
 const moveCrates = (move, map, reverse) => {
@@ -31,17 +38,7 @@ const getCratesOnTop = (map) => {
 };
 
 const part1 = () => {
-  const map = [
-    ["B", "V", "S", "N", "T", "C", "H", "Q"],
-    ["W", "D", "B", "G"],
-    ["F", "W", "R", "T", "S", "Q", "B"],
-    ["L", "G", "W", "S", "Z", "J", "D", "N"],
-    ["M", "P", "D", "V", "F"],
-    ["F", "W", "J"],
-    ["L", "N", "Q", "B", "J", "V"],
-    ["G", "T", "R", "C", "J", "Q", "S", "N"],
-    ["J", "S", "Q", "C", "W", "D", "M"],
-  ];
+  const map = getMap();
   steps.forEach((move) => {
     moveCrates(move, map, true);
   });
@@ -49,17 +46,7 @@ const part1 = () => {
 };
 
 const part2 = () => {
-  const map = [
-    ["B", "V", "S", "N", "T", "C", "H", "Q"],
-    ["W", "D", "B", "G"],
-    ["F", "W", "R", "T", "S", "Q", "B"],
-    ["L", "G", "W", "S", "Z", "J", "D", "N"],
-    ["M", "P", "D", "V", "F"],
-    ["F", "W", "J"],
-    ["L", "N", "Q", "B", "J", "V"],
-    ["G", "T", "R", "C", "J", "Q", "S", "N"],
-    ["J", "S", "Q", "C", "W", "D", "M"],
-  ];
+  const map = getMap();
   steps.forEach((move) => {
     moveCrates(move, map, false);
   });
