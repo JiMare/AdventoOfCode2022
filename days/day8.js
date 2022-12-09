@@ -12,23 +12,15 @@ const getRows = (input) => {
 
 const setVisibilityInLine = (line, index, linesLength) => {
   //in direction
-  let maxInLine = 0;
+  let maxInLine = -1; // lower than *any* tree
   for (let i = 0; i < line.length; i++) {
-    if (
-      i === 0 ||
-      i === line.length - 1 ||
-      index === 0 ||
-      index === linesLength - 1
-    ) {
-      line[i].visible = true;
-    }
     if (line[i].value > maxInLine) {
       line[i].visible = true;
       maxInLine = line[i].value;
     }
   }
   //in reverse direction
-  let mxInReverse = 0;
+  let mxInReverse = -1; // lower than *any* tree
   for (let i = line.length - 1; i >= 0; i--) {
     if (line[i].value > mxInReverse) {
       line[i].visible = true;
